@@ -79,3 +79,7 @@ id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte
 id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_1_certif))])] <- 1
 
 id_confluence$BrDeath[which(id_confluence$VitalStatus == 1 & is.na(id_confluence$BrDeath))] <- 0
+
+
+## Este comentario es una prueba.
+
