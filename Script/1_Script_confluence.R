@@ -85,4 +85,5 @@ id_confluence$BrDeath[which(id_confluence$VitalStatus == 1 & is.na(id_confluence
 
 ## Este comentario fue generado en una rama de prueba.
 
-## Segunda prueba
+## Otra cosa
+## Este comentario es conflictivo
