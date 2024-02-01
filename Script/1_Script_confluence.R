@@ -51,7 +51,31 @@ table(confluence = id_confluence$confluence)
 id_confluence$VitalStatus <- ifelse(!is.na(id_confluence$ars_fecha_de_muerte), 1, 0)
 table(vital_status = id_confluence$VitalStatus, useNA = "ifany")
 
-## 3.2. CauseDeath
+id_confluence %>% 
+  filter(VitalStatus == 1) %>% 
+  View()
 
+## 3.2. CauseDeath
+id_confluence$CauseDeath <- NA
+id_confluence$CauseDeath[which(id_confluence$VitalStatus == 0)] <- "777"
 
 ## 3.3. BrDeath
+id_confluence$BrDeath <- NA
+id_confluence$BrDeath[which(id_confluence$VitalStatus == 0)] <- "777"
+
+id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_5_certif)),] %>% View()
+id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_5_certif))])] <- 1
+
+id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_4_certif)),] %>% View()
+id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_4_certif))])] <- 1
+
+id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_3_certif)),] %>% View()
+id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_3_certif))])] <- 1
+
+id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_2_certif)),] %>% View()
+id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_2_certif))])] <- 1
+
+id_confluence[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_1_certif)),] %>% View()
+id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[which(grepl("w*\\s[Mm][Aa][Mm][Aa]", id_confluence$causa_de_muerte_n_1_certif))])] <- 1
+
+id_confluence$BrDeath[which(id_confluence$VitalStatus == 1 & is.na(id_confluence$BrDeath))] <- 0
