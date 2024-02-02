@@ -81,9 +81,27 @@ id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[w
 id_confluence$BrDeath[which(id_confluence$VitalStatus == 1 & is.na(id_confluence$BrDeath))] <- 0
 
 
-## Este comentario es una prueba.
 
-## Este comentario fue generado en una rama de prueba.
 
-## Otra cosa
-## Este comentario es conflictivo
+
+
+
+id_confluence %>% 
+  pivot_longer(cols = starts_with("causa_de_muerte"), names_to = "cause_n", values_to = "motive") %>% 
+  mutate(cie_cause_n = case_when((cause_n == "causa_de_muerte_n_1_certif")~"causa_cie10_1",
+                                 (cause_n == "causa_de_muerte_n_2_certif")~"causa_cie10_2",
+                                 (cause_n == "causa_de_muerte_n_3_certif")~"causa_cie10_3",
+                                 (cause_n == "causa_de_muerte_n_4_certif")~"causa_cie10_4",
+                                 (cause_n == "causa_de_muerte_n_5_certif")~"causa_cie10_5")) %>% 
+  count(motive) %>% 
+  View()
+
+
+
+
+
+
+
+
+
+
