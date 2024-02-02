@@ -49,4 +49,4 @@ po/*~
 rsconnect/
 
 # Excel files
-.xlsx
+Output/*.xlsx
