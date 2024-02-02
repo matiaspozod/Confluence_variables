@@ -27,7 +27,7 @@ data_ars_rcon <- exportRecordsTyped(rcon = rcon,
 
 
 # 2. Data Wrangling -------------------------------------------------------
-data_compact <- data[,c(2,4,11:15,1254,1256,1257,1805:1807)]
+data_compact <- data[,c(2,4,11:15,1254,1256,1257,1805:1807,884)]
 
 id_confluence$PersonID_sin_ASCL <- as.integer(id_confluence$PersonID_sin_ASCL)
 
@@ -43,7 +43,7 @@ table(case_control = id_confluence$case_control,
       useNA = "always")
 
 table(confluence = id_confluence$confluence)
-
+id_confluence$death_age <- floor(lubridate::interval(id_confluence$dob, id_confluence$ars_fecha_de_muerte) / lubridate::years(1))
 
 # 3. Confluence variables -------------------------------------------------
 
