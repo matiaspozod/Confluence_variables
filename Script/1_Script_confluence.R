@@ -81,12 +81,3 @@ id_confluence$BrDeath[which(id_confluence$PersonID %in% id_confluence$PersonID[w
 id_confluence$BrDeath[which(id_confluence$VitalStatus == 1 & is.na(id_confluence$BrDeath))] <- 0
 
 
-<<<<<<< HEAD
-## Este comentario es una prueba.
-
-## Este comentario fue generado en una rama de prueba.
-
-## Otra cosa
-## Este comentario es conflictivo
-=======
->>>>>>> c6fc0f10c1b503f53c9c854ead68d56050887f8b
