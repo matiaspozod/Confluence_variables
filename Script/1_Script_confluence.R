@@ -7,6 +7,8 @@ library(redcapAPI)
 save.image("Workspace.Rda")
 load("Workspace.Rda")
 
+# DATA DICTIONARY CONFLUENCE https://confluence.cancer.gov/#data_exploration/dictionary
+
 # 1. Data import ----------------------------------------------------------
 data <- readRDS("Data/db_ars.rds")
 id_confluence <- readRDS("Data/ids_confluence.RDS")
@@ -190,3 +192,4 @@ id_confluence$DateDiagIndex <- id_confluence$ars_fecha_informe
 db_confluence <- id_confluence %>% 
   select(PersonID, DateEntry, DateDiagIndex, YearsToEnter, VitalStatus, CauseDeath, BrDeath)
 
+write_xlsx(db_confluence, path = "Output/db_survival_variables_confluence.xlsx")

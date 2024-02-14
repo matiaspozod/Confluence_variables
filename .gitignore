@@ -49,4 +49,4 @@ po/*~
 rsconnect/
 
 # Excel files
-Output/*.xlsx
+Output/data_confluence_para_cie10.xlsx
