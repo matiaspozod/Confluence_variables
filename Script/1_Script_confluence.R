@@ -188,8 +188,44 @@ id_confluence$ars_fecha_informe[which(id_confluence$PersonID == "ASCL03061")] <-
 id_confluence$ars_fecha_informe[which(id_confluence$PersonID == "ASCL03200")] <- as.Date("2019-03-22") # Mediante FC
 
 id_confluence$DateDiagIndex <- id_confluence$ars_fecha_informe
+
+## 5.4 Revisión YearsToStatus -----------------------------------------------------------
+# Cargar log de cambios realizados por M. Barrera, para rescatar la fecha de actualizacion de la variable de fecha de defunción
+log_mb <- read.csv("Data/ARSENICOFINAL_Logging_2024-02-23_1149.csv", header = T, fileEncoding = "UTF-8")
+colnames(log_mb) <- c("Hora_dia", "Nombre_usuario", "Accion", "Lista_de_cambios_de_datos")
+log_mb$Accion <- gsub("^.+A", "A", log_mb$Accion)
+log_mb$PersonID_sin_ASCL <- gsub("[AaSsCcLl]", "", log_mb$Accion)
+log_mb$PersonID_sin_ASCL <- sub("^0*", "", log_mb$PersonID_sin_ASCL)
+log_mb$PersonID_sin_ASCL <- as.integer(log_mb$PersonID_sin_ASCL)
+log_mb$date_update_dod <- as.Date(log_mb$Hora_dia)
+
+log_mb <- log_mb %>% 
+  filter(grepl("ars_fecha_de_muerte", Lista_de_cambios_de_datos))
+
+min(log_mb$date_update_dod, na.rm = T)
+max(log_mb$date_update_dod, na.rm = T)
+range(log_mb$date_update_dod, na.rm = T)
+
+# Cruce
+
+id_confluence <- id_confluence %>% left_join(log_mb[, c(5,6)], by = "PersonID_sin_ASCL")
+View(id_confluence[,c(1,3,23,30)])
+# Revision fechas NA
+id_confluence$date_update_dod[which(id_confluence$PersonID == "ASCL0491")] <- as.Date("2023-09-28") # Ingresada por C. Riveros.
+id_confluence$date_update_dod[which(is.na(id_confluence$date_update_dod))] <- max(id_confluence$date_update_dod, na.rm = T) # Se considera la última fecha de revisión para los pptes. vivos
+# Creacion de variable YearsToStatus
+colnames(id_confluence)[30] <- "DateLastFU"
+id_confluence$YearsToStatus <- round(as.numeric(difftime(id_confluence$DateLastFU, id_confluence$DateDiagIndex, units = "days"))/365.25, digits = 3)
+
+# Valor 777 para los NA en variables YearsToEnter y YearsToStatus
+id_confluence$YearsToStatus[which(is.na(id_confluence$YearsToStatus))] <- 777
+id_confluence$YearsToEnter[which(is.na(id_confluence$YearsToEnter))] <- 777
+
+id_confluence$YearsToStatus <- as.character(id_confluence$YearsToStatus)
+id_confluence$YearsToEnter <- as.character(id_confluence$YearsToEnter)
+
 ## Base de datos seleccionada para confluence
 db_confluence <- id_confluence %>% 
-  select(PersonID, DateEntry, DateDiagIndex, YearsToEnter, VitalStatus, CauseDeath, BrDeath)
+  select(PersonID, DateEntry, DateDiagIndex, YearsToEnter, DateLastFU, YearsToStatus, VitalStatus, CauseDeath, BrDeath)
 
 write_xlsx(db_confluence, path = "Output/db_survival_variables_confluence.xlsx")
